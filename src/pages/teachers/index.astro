@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import db from "../../lib/db";
+
+type Teacher = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+};
+
+const teachers = db.prepare(
+  "SELECT id, first_name, last_name, email FROM teachers ORDER BY last_name, first_name"
+).all() as Teacher[];
+
+---
+
+<Layout title="Teachers">
+  <h1>Teachers</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Identifiant</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {teachers.map((teacher) => (
+        <tr>
+          <td>{teacher.id}</td>
+          <td>{teacher.last_name}</td>
+          <td>{teacher.first_name}</td>
+          <td>{teacher.email}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Layout>
